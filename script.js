@@ -67,21 +67,3 @@ function getFirstDayOfMonth(year, month) {
     return new Date(year, month, 1);
   }
   
-  // 👇️ First day of CURRENT MONTH
-  const date = new Date();
-  const firstDayCurrentMonth = getFirstDayOfMonth(
-    date.getFullYear(),
-    date.getMonth(),
-  );
-  alert(firstDayCurrentMonth); // 👉️ Sat Oct 01 2022
-  alert(firstDayCurrentMonth.getDay())
-  
-  function whiteSpace(){
-      let weekday = firstDayCurrentMonth().getDay()
-      switch (weekday){
-          case 0:
-            break
-            case 1:
-
-      }
-  }

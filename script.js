@@ -3,6 +3,16 @@ const daysInTheMonth = [31, 28, 31, 30, 31, 30, 30, 31, 30, 31, 30, 31]
 let changingMarkUpsIndex = 0
 
 const calendarConstructor = () => {
+    const date = new Date();
+    const firstDayCurrentMonth = getFirstDayOfMonth(
+        date.getFullYear(),
+        date.getMonth(),
+      );
+      for (let j = 0; j <= firstDayCurrentMonth.getDay(); j++){
+        let whiteSpace = document.createElement('p')
+        whiteSpace.setAttribute('class', 'whiteSpace')
+        calendar.append(whiteSpace)
+      }
     let month = new Date()
     for (let i = 1; i <= daysInTheMonth[month.getMonth()]; i++){
         let day = document.createElement('p')
@@ -48,3 +58,30 @@ document.addEventListener('keydown', function (e) {
 function floaterVanisher(){
     document.querySelector('.floaterDiv').classList.remove('active')
 }
+
+
+
+
+
+function getFirstDayOfMonth(year, month) {
+    return new Date(year, month, 1);
+  }
+  
+  // 👇️ First day of CURRENT MONTH
+  const date = new Date();
+  const firstDayCurrentMonth = getFirstDayOfMonth(
+    date.getFullYear(),
+    date.getMonth(),
+  );
+  alert(firstDayCurrentMonth); // 👉️ Sat Oct 01 2022
+  alert(firstDayCurrentMonth.getDay())
+  
+  function whiteSpace(){
+      let weekday = firstDayCurrentMonth().getDay()
+      switch (weekday){
+          case 0:
+            break
+            case 1:
+
+      }
+  }

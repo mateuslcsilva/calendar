@@ -21,7 +21,7 @@
     <aside class='aside'>
         <div class="asideContainer">
             <div class="logo">CALENDARIO</div>
-            <div class="btnNewAppointment">Nova agenda!</div>
+            <div class="btnNewAppointment" onclick="newApointment()">Nova agenda!</div>
         </div>
         <div class="dropDownMarkUps">
 
@@ -47,20 +47,34 @@
             </div>
         </div>
     </aside>
-
+    <main class="fadeOutContainer"></main>
+    <div class="newApointmentDiv">
+        <button class='apointmentCloseButton' onclick="closeApointmentBox()">x</button>
+    </div>
     <main class='container'>
+        <div class='dayInTheWeek'>
+            <p>Domingo</p>
+            <p>Segunda</p>
+            <p>Terça</p>
+            <p>Quarta</p>
+            <p>Quinta</p>
+            <p>Sexta</p>
+            <p>Sábado</p>
+        </div>
         <div class='calendar'></div>
+        
+        
+        
+    </main>
+    <div class='subtitlesContainer'>
         <h3 class='floaterTitle'>LEGENDAS:</h3>
-       <div class='noWrapMarkUps'>
+               <div class='noWrapMarkUps'>
            <p class="markUpSubtitle red">MARCADOR VERMELHO</p>
            <p class="markUpSubtitle blue">MARCADOR AZUL</p>
            <p class="markUpSubtitle pink">MARCADOR ROSA</p>
            <p class="markUpSubtitle green">MARCADOR VERDE</p>
-       </div>
-
-
-
-    </main>
+               </div>
+    </div>
 
     <div class='floaterDiv'>
         <button class='closeButton' onclick="floaterVanisher()"> x</button>

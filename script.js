@@ -67,3 +67,13 @@ function getFirstDayOfMonth(year, month) {
     return new Date(year, month, 1);
   }
   
+
+  function newApointment(){
+      document.querySelector('.fadeOutContainer').classList.add('fadeOutContainerActive')
+      document.querySelector('.newApointmentDiv').classList.add('newApointmentDivActive')
+  }
+
+  function closeApointmentBox(){
+    document.querySelector('.fadeOutContainer').classList.remove('fadeOutContainerActive')
+    document.querySelector('.newApointmentDiv').classList.remove('newApointmentDivActive')
+  }

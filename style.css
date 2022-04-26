@@ -155,6 +155,51 @@ body{
     margin: 2% 4%;
     overflow: hidden;
 }
+.currentMonth{
+    position: absolute;
+    width: 14%;
+    height: 10%;
+    background-color: #fff;
+    left: 49%;
+    top: -5%;
+    border-radius: 2vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    box-shadow: 0 1vh 1vh rgba(126, 125, 125, 0.233);
+}
+.currentMonthText{
+    margin-bottom: -1%;
+    font-size: 200%;
+}
+.setaPreviousMonth{
+    position: absolute;
+    left: 49.2%;
+    top: 1%;
+    padding: 1vh;
+    box-shadow: 0.5vh -0.5vh 0 1px rgb(78, 78, 78) inset;
+    border: solid transparent;
+    border-width: 0 0 2% 2%;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+.setaPreviousMonth:hover{
+    box-shadow: 0.5vh -0.5vh 0 1px cornflowerblue inset;
+}
+.setaNextMonth{
+    position: absolute;
+    left: 61.2%;
+    top: 1%;
+    padding: 1vh;
+    box-shadow: 0.5vh -0.5vh 0 1px rgb(78, 78, 78) inset;
+    border: solid transparent;
+    border-width: 0 0 2% 2%;
+    transform: rotate(-135deg);
+    cursor: pointer;
+}
+.setaNextMonth:hover{
+    box-shadow: 0.5vh -0.5vh 0 1px cornflowerblue inset;
+}
 .calendar{
     width: 100%;
     height: 80%;
@@ -164,15 +209,15 @@ body{
     margin-top: 2%;
 }
 .dayInTheWeek{
+    transform: translateY(100%);
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding-left: 3.5%;
+    display: grid;
+    grid-template-columns: repeat(7, 15%);
+    padding-left: 2%;
 }
 .dayInTheWeek p{
-    color: rgb(100, 148, 237);
+    color: rgb(67, 120, 219);
     font-weight: 600;
-    margin-right: 10%;
 }
 .markUpSubtitle{
     padding: 1.3%;
@@ -191,7 +236,7 @@ body{
     z-index: 2;
     border-radius: 2vh;
     background-color: #fff;
-    width: 80%;
+    width: 82%;
     height: 20%;
     bottom: -7%;
     left: 15%;
@@ -218,7 +263,7 @@ body{
 .day:hover{
     height: 105%;
     width: 103.5%;
-    transform: translate(-3.5%, -5%);
+    transform: translate(-3.5%, -2%);
 }
 .whiteSpace{
     height: 95%;
@@ -250,9 +295,9 @@ body{
 .closeButton{
     position: absolute;
     right: 2%;
-    top: 5%;
+    top: 2%;
     width: 7%;
-    padding-top: -5%;
+    padding-top: -2%;
     font-weight: 600;
     font-size: 90%;
     border: none;

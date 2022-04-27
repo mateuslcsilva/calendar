@@ -1,5 +1,5 @@
 const calendar = document.querySelector('.calendar')
-const daysInTheMonth = [31, 28, 31, 30, 31, 30, 30, 31, 30, 31, 30, 31]
+const daysInTheMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 const months = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
 let changingMarkUpsIndex = 0
 const date = new Date();
@@ -112,4 +112,8 @@ function previousMonth() {
 } else{
     alert('sorry, só temos esse ano, por enquanto')
 }
+}
+
+function noBorder(element){
+    element.style.border = 'none'
 }

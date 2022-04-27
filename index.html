@@ -49,10 +49,11 @@
     </aside>
     <main class="fadeOutContainer"></main>
     <div class="currentMonth">
-        <p class='currentMonthText'></p>
-    </div>
         <p class='setaPreviousMonth'onclick="previousMonth()"></p>
+        <p class='currentMonthText'></p>
         <p class='setaNextMonth' onclick="nextMonth()"></p>
+        <p class='setaShowMonthSelector'></p>
+    </div>
     <div class="newApointmentDiv">
         <button class='apointmentCloseButton' onclick="closeApointmentBox()">x</button>
     </div>
@@ -84,7 +85,7 @@
     <div class='floaterDiv'>
         <button class='closeButton' onclick="floaterVanisher()"> x</button>
         Mude o texto do marcador:
-        <input maxlength="25" type="text" name="ChangingMarkUps" id="ChangingMarkUps" placeholder="escreve aqui ó" required>
+        <input maxlength="25" type="text" name="ChangingMarkUps" id="ChangingMarkUps" placeholder="escreve aqui ó" required onclick="noBorder(this)">
         <input type="button" value="PRONTO" class='btnChangingMarkUps' onclick="changing()">
     </div>
 

@@ -13,7 +13,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600&family=Montserrat:wght@100&family=Open+Sans:wght@300&display=swap"
         rel="stylesheet">
-        <script src="script.js" defer></script>
+    <script src="script.js" defer></script>
     <title>Calendário</title>
 </head>
 
@@ -33,30 +33,80 @@
 
             <div class="markUps">
                 <div class='noWrap'>
-                    <p class='circle red'></p><span onclick="changable(0)" class='changable changableRed'>MARCADOR VERMELHO</span>
+                    <p class='circle red'></p><span onclick="changable(0)" class='changable changableRed'>MARCADOR
+                        VERMELHO</span>
                 </div>
                 <div class='noWrap'>
-                    <p class='circle blue'></p><span onclick="changable(1)"  class="changable changableBlue">MARCADOR AZUL</span>
+                    <p class='circle blue'></p><span onclick="changable(1)" class="changable changableBlue">MARCADOR
+                        AZUL</span>
                 </div>
                 <div class='noWrap'>
-                    <p class='circle pink'></p><span onclick="changable(2)"  class="changable changablePink">MARCADOR ROSA</span>
+                    <p class='circle pink'></p><span onclick="changable(2)" class="changable changablePink">MARCADOR
+                        ROSA</span>
                 </div>
                 <div class='noWrap'>
-                    <p class='circle green'></p><span onclick="changable(3)"  class="changable changableGreen">MARCADOR VERDE</span>
+                    <p class='circle green'></p><span onclick="changable(3)" class="changable changableGreen">MARCADOR
+                        VERDE</span>
                 </div>
             </div>
         </div>
     </aside>
+
+
+
     <main class="fadeOutContainer"></main>
     <div class="currentMonth">
-        <p class='setaPreviousMonth'onclick="previousMonth()"></p>
+        <p class='setaPreviousMonth' onclick="previousMonth()"></p>
         <p class='currentMonthText'></p>
         <p class='setaNextMonth' onclick="nextMonth()"></p>
         <p class='setaShowMonthSelector'></p>
     </div>
-    <div class="newApointmentDiv">
-        <button class='apointmentCloseButton' onclick="closeApointmentBox()">x</button>
+
+
+
+    <div class="newApointmentDiv ">
+        <div>
+            <button class="apointmentCloseButton" onclick="closeApointmentBox()">x</button>
+            <h4>CRIE UMA NOVA TAREFA</h4>
+           <button class="setaPreviousStep" onclick="previousStepButton()"></button>
+            <button class='setaNextStep' onclick="nextStepButton()"></button>
+            <main class="newApointmentMain">
+                <div class='sectionOne sectionActive'>
+                    <div class="mesesNewApointmentDiv">
+                        <input type="checkbox" name="mesesNewApointment" id="mesesNewApointment" onclick="shownMonthSelector(this)">
+                        <label for="mesesNewApointment" class="labelMesesNewApointment"><p>MÊS</p></label>
+                    </div>
+                    <div class='mesesNewApointmentSelect'>
+                        <button class='btnCloseMonthSelector' onclick="closeMonthSelector()">x</button>
+                        <div class="monthSelectorContainer">
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">JANEIRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">FEVEREIRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">MARÇO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">ABRIL</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">MAIO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">JUNHO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">JULHO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">AGOSTO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">SETEMBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">OUTUBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">NOVEMBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this)">DEZEMBRO</p>
+                        </div>
+                    </div>
+                    <div class="diasNewApointmentDiv">
+                        <input type="checkbox" name="diasNewApointment" id="diasNewApointment">
+                        <label for="diasNewApointment" class="labelDiasNewApointment"><p>DIAS</p></label>
+                    </div>
+                </div>
+                <div class="sectionTwo">TESTE2</div>
+                <div class="sectionThree">TESTE3</div>
+            
+            </main>
+        </div>
     </div>
+
+
+
     <main class='container'>
         <div class='dayInTheWeek'>
             <p>Domingo</p>
@@ -68,24 +118,25 @@
             <p>Sábado</p>
         </div>
         <div class='calendar'></div>
-        
-        
-        
+
+
+
     </main>
     <div class='subtitlesContainer'>
         <h3 class='floaterTitle'>LEGENDAS:</h3>
-               <div class='noWrapMarkUps'>
-           <p class="markUpSubtitle red">MARCADOR VERMELHO</p>
-           <p class="markUpSubtitle blue">MARCADOR AZUL</p>
-           <p class="markUpSubtitle pink">MARCADOR ROSA</p>
-           <p class="markUpSubtitle green">MARCADOR VERDE</p>
-               </div>
+        <div class='noWrapMarkUps'>
+            <p class="markUpSubtitle red">MARCADOR VERMELHO</p>
+            <p class="markUpSubtitle blue">MARCADOR AZUL</p>
+            <p class="markUpSubtitle pink">MARCADOR ROSA</p>
+            <p class="markUpSubtitle green">MARCADOR VERDE</p>
+        </div>
     </div>
 
     <div class='floaterDiv'>
         <button class='closeButton' onclick="floaterVanisher()"> x</button>
         Mude o texto do marcador:
-        <input maxlength="25" type="text" name="ChangingMarkUps" id="ChangingMarkUps" placeholder="escreve aqui ó" required onclick="noBorder(this)">
+        <input maxlength="25" type="text" name="ChangingMarkUps" id="ChangingMarkUps" placeholder="escreve aqui ó"
+            required onclick="noBorder(this)">
         <input type="button" value="PRONTO" class='btnChangingMarkUps' onclick="changing()">
     </div>
 

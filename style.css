@@ -482,6 +482,7 @@ body {
     top: 48%;
     left: 1%;
     background-color: transparent;
+    display: none;
 }
 
 
@@ -500,6 +501,7 @@ body {
     top: 48%;
     right: 1%;
     background-color: transparent;
+    display: none;
 }
 
 .setaNextStep:hover {
@@ -508,7 +510,7 @@ body {
 
 .newApointmentMain {
     width: 80%;
-    height: 70%;
+    height: 80%;
     position: absolute;
     bottom: 10%;
     left: 50%;
@@ -558,19 +560,19 @@ body {
 
 
 /* ABAIXO É DEFINIDO O BOTÃO DE SELECIONAR O MÊS AO CRIAR COMPROMISSO */
-.mesesNewApointmentDiv{
+.mesesNewApointmentDiv {
     height: 20%;
     width: 20%;
     border: 2px solid rgb(189, 188, 188);
     border-radius: 5px;
 }
 
-#mesesNewApointment{
+#mesesNewApointment {
     display: none;
 
 }
 
-.labelMesesNewApointment{
+.labelMesesNewApointment {
     width: 100%;
     height: 100%;
     font-size: 130%;
@@ -581,12 +583,12 @@ body {
     transition: .2s ease-in-out;
 }
 
-.labelMesesNewApointment:hover{
+.labelMesesNewApointment:hover {
     color: cornflowerblue;
     transition: .2s ease-in-out;
 }
 
-.mesesNewApointmentSelect{
+.mesesNewApointmentSelect {
     width: 100%;
     height: 50%;
     position: absolute;
@@ -594,12 +596,12 @@ body {
     transition: .1s ease-in-out;
 }
 
-.mesesNewApointmentSelectAtive{
+.mesesNewApointmentSelectAtive {
     top: 40%;
     transition: .1s ease-in-out;
 }
 
-.btnCloseMonthSelector{
+.btnCloseMonthSelector {
     border: none;
     background-color: transparent;
     font-weight: 600;
@@ -611,14 +613,14 @@ body {
     margin-top: 0;
 }
 
-.monthSelectorContainer{
+.monthSelectorContainer {
     display: grid;
     grid-template-columns: repeat(4, 17%);
     gap: 5%;
     justify-content: center;
 }
 
-.monthSelectorElement{
+.monthSelectorElement {
     height: 100%;
     display: flex;
     align-items: center;
@@ -630,7 +632,7 @@ body {
     transition: .2s ease-in-out;
 }
 
-.monthSelectorElement:hover{
+.monthSelectorElement:hover {
     color: cornflowerblue;
     transition: .2s ease-in-out;
 }
@@ -639,7 +641,7 @@ body {
 
 
 /* ABAIXO É DEFINIDO O BOTÃO PARA SELECIONAR O DIA AO CRIAR COMPROMISSO */
-.diasNewApointmentDiv{
+.daysNewApointmentDiv {
     width: 20%;
     height: 20%;
     border: 2px solid rgb(189, 188, 188);
@@ -647,12 +649,12 @@ body {
 }
 
 
-#diasNewApointment{
+#daysNewApointment {
     display: none;
 
 }
 
-.labelDiasNewApointment{
+.labelDaysNewApointment {
     width: 100%;
     height: 100%;
     font-size: 130%;
@@ -664,10 +666,90 @@ body {
     align-items: center;
 }
 
-.labelDiasNewApointment p{
+.labelDaysNewApointment:hover {
+    color: cornflowerblue;
+    transition: .2s ease-in-out;
+}
+
+.labelDaysNewApointment p {
     width: fit-content;
 }
 
-#diasNewApointment:checked ~ .labelDiasNewApointment{
-    color: green;
+.daysNewApointmentSelect {
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    top: 150%;
+    transition: .1s ease-in-out;
+}
+
+.daysNewApointmentSelectAtive {
+    top: 33%;
+    transition: .1s ease-in-out;
+}
+
+.btnCloseDaySelector {
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    width: 98%;
+    display: flex;
+    justify-content: end;
+    padding-left: 20%;
+    margin-top: 0;
+}
+
+.daySelectorContainer {
+    display: grid;
+    grid-template-columns: repeat(7, 12%);
+    justify-content: center;
+    width: 80%;
+    margin-left: 12%;
+}
+
+
+/* ABAIXO, FAZEMOS A ESTILIZAÇÃO DOS ELEMENTOS NO GRID PARA SELECIONAR O DIA PARA INCLUIR UM COMPROMISSO */
+.gridsWhiteSpace {
+    height: 90%;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.selectorsDay {
+    height: 90%;
+    width: 70%;
+    border: 2px solid rgb(189, 188, 188);
+    border-radius: 5px;
+    font-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.selectorsDay:hover {
+    color: cornflowerblue;
+    transition: .2s ease-in-out;
+}
+
+.gridSelectorDayInTheWeek {
+    top: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 74%;
+    margin-left: 13%;
+}
+
+.gridSelectorDayInTheWeek p {
+    font-size: 70%;
+    color: cornflowerblue;
 }

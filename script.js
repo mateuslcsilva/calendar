@@ -5,6 +5,8 @@ let changingMarkUpsIndex = 0 // VARIÁVEL QUE MOSTRA QUAL MARCADOR SERÁ ALTERAD
 const date = new Date(); // DATE?
 let currentMonth = date.getMonth() // MÊS CORRENTE
 let sectionActive = 0 // VARIÁVEL QUE MOSTRA QUAL PASSO DEVE SER MOSTRADO NA CRIAÇÃO DE TAREFAS
+let selectedMonth = 999 // VARIÁVEL QUE DEFINE EM QUAL MÊS ESTÁ SENDO INCLUÍDO O COMPROMISSO. É GLOBAL POIS É USADA EM VÁRIAS FUNÇÕES
+let selectedDay = 999 // VARIÁVEL QUE DEFINE EM QUAL DIA SERÁ INCLUÍDO O COMPROMISSO. NÃO SEI SE PRECISA ESTAR AQUI, MAS O MÊS ESTÁ, SO ...,
 
 
 //ACHA O DIA DA SEMANA DO PRIMEIRO DIA DO MêS
@@ -92,64 +94,16 @@ document.addEventListener('keydown', function (e) {
 }
 )
 
-const previousStepButton = () => {
-    switch (sectionActive) {
-        case 1: {
-            document.querySelector('.sectionTwo').classList.remove('sectionActive')
-            document.querySelector('.sectionOne').classList.add('sectionActive')
-            sectionActive--
-            break
-        }
-        case 2: {
-            document.querySelector('.sectionThree').classList.remove('sectionActive')
-            document.querySelector('.sectionTwo').classList.add('sectionActive')
-            sectionActive--
-            break
-        }
-    }
-}
-
-const nextStepButton = () => {
-    switch (sectionActive) {
-        case 0: {
-            document.querySelector('.sectionTwo').classList.add('sectionActive')
-            document.querySelector('.sectionOne').classList.remove('sectionActive')
-            sectionActive++
-            break
-        }
-        case 1: {
-            document.querySelector('.sectionThree').classList.add('sectionActive')
-            document.querySelector('.sectionTwo').classList.remove('sectionActive')
-            sectionActive++
-            break
-        }
-    }
-}
-
-const closeApointmentBox = () => {
-    document.querySelector('.fadeOutContainer').classList.remove('fadeOutContainerActive')
-    document.querySelector('.newApointmentDiv').classList.remove('newApointmentDivActive')
-    resetApointmentSection()
-    closeMonthSelector()
-}
-
-const resetApointmentSection = () => {
-    document.querySelector('.sectionThree').classList.remove('sectionActive')
-    document.querySelector('.sectionTwo').classList.remove('sectionActive')
-    document.querySelector('.sectionOne').classList.add('sectionActive')
-    sectionActive = 0
-    document.querySelector('.labelMesesNewApointment').innerText = 'MÊS'
-}
-
 const floaterVanisher = () => {
     document.querySelector('.floaterDiv').classList.remove('active')
 }
 
-const newApointmentBox = () => {
-    document.querySelector('.fadeOutContainer').classList.add('fadeOutContainerActive')
-    document.querySelector('.newApointmentDiv').classList.add('newApointmentDivActive')
+const noBorder = (element) => {
+    element.style.border = 'none'
 }
 
+
+//////// ABAIXO, FUNÇÕES PARA MUDAR O MÊS EXIBIDO DO CALENDÁRIO
 
 const clearCalendar = () => {
     document.querySelector('.calendar').innerHTML = ''
@@ -175,13 +129,87 @@ const previousMonth = () => {
     }
 }
 
-const noBorder = (element) => {
-    element.style.border = 'none'
+
+///////////ABAIXO, FUNÇÕES PARA ABRIR A CAIXA DE NOVAS TAREFAS PELO BOTÃO DE NOVA TAREFA
+const newApointmentBox = () => {
+    document.querySelector('.fadeOutContainer').classList.add('fadeOutContainerActive')
+    document.querySelector('.newApointmentDiv').classList.add('newApointmentDivActive')
 }
+
+
+const closeApointmentBox = () => {
+    document.querySelector('.fadeOutContainer').classList.remove('fadeOutContainerActive')
+    document.querySelector('.newApointmentDiv').classList.remove('newApointmentDivActive')
+    document.querySelector('.setaPreviousStep').style.display = 'none'
+    document.querySelector('.setaNextStep').style.display = 'none'
+    resetApointmentSection()
+    monthReset()
+    dayReset()
+}
+
+const resetApointmentSection = () => {
+    document.querySelector('.sectionThree').classList.remove('sectionActive')
+    document.querySelector('.sectionTwo').classList.remove('sectionActive')
+    document.querySelector('.sectionOne').classList.add('sectionActive')
+    sectionActive = 0
+}
+
+
+
+
+
+
+
+
+
+// ABAIXO DEFINIMOS AS FUNÇÕES DA CAIXA DE INCLUIR COMPROMISSO
+const nextStepButton = () => {
+    switch (sectionActive) {
+        case 0: {
+            if (selectedDay > 40 || selectedMonth > 11) return
+            document.querySelector('.sectionTwo').classList.add('sectionActive')
+            document.querySelector('.sectionOne').classList.remove('sectionActive')
+            document.querySelector('.setaPreviousStep').style.display = 'block'
+            sectionActive++
+            break
+        }
+        case 1: {
+            document.querySelector('.sectionThree').classList.add('sectionActive')
+            document.querySelector('.sectionTwo').classList.remove('sectionActive')
+            document.querySelector('.setaNextStep').style.display = 'none'
+            sectionActive++
+            break
+        }
+    }
+}
+
+
+const previousStepButton = () => {
+    switch (sectionActive) {
+        case 1: {
+            document.querySelector('.sectionTwo').classList.remove('sectionActive')
+            document.querySelector('.sectionOne').classList.add('sectionActive')
+            document.querySelector('.setaPreviousStep').style.display = 'none'
+            sectionActive--
+            break
+        }
+        case 2: {
+            document.querySelector('.sectionThree').classList.remove('sectionActive')
+            document.querySelector('.sectionTwo').classList.add('sectionActive')
+            document.querySelector('.setaNextStep').style.display = 'block'
+            sectionActive--
+            break
+        }
+    }
+}
+
+
+//ABAIXO, AS FUNÇÕES PARA O PRIMEIRO PASSO DE CRIAÇÃO DE TAREFA
 
 const shownMonthSelector = (element) => {
     if (element.checked) {
         document.querySelector('.mesesNewApointmentSelect').classList.add('mesesNewApointmentSelectAtive')
+        closeDaySelector()
         //adicionar aqui comando para tirar o active do dia quando o mês for ativado
     } else {
         document.querySelector('.mesesNewApointmentSelect').classList.remove('mesesNewApointmentSelectAtive')
@@ -193,9 +221,86 @@ const closeMonthSelector = () => {
     document.querySelector('#mesesNewApointment').checked = false
 }
 
-const monthSelected = (element) => {
+const monthSelected = (element, month) => {
     document.querySelector('.labelMesesNewApointment').innerText = element.innerText
+    selectedMonth = month
     closeMonthSelector()
+}
+
+const monthReset = () => {
+    document.querySelector('.labelMesesNewApointment').innerText = 'MÊS'
+    selectedMonth = 999
+    closeMonthSelector()
+}
+
+
+
+
+const shownDaysSelector = (element) => {
+    if (selectedMonth > 11){
+        document.querySelector('#daysNewApointment').checked = false
+        alert('Por favor, selecione um mês!')
+        return
+    }
+    if (element.checked) {
+        document.querySelector('.daysNewApointmentSelect').classList.add('daysNewApointmentSelectAtive')
+        calendarGridConstructor()
+        closeMonthSelector()
+    } else {
+        document.querySelector('.daysNewApointmentSelect').classList.remove('daysNewApointmentSelectAtive')
+        closeDaySelector()
+    }
+}
+
+const closeDaySelector = () => {
+    document.querySelector('.daysNewApointmentSelect').classList.remove('daysNewApointmentSelectAtive')
+    document.querySelector('#daysNewApointment').checked = false
+    document.querySelector('.daySelectorContainer').innerHTML = ''
+}
+
+const daySelected = (element) => {
+    document.querySelector('.labelDaysNewApointment').innerText = element.innerText
+    document.querySelector('.setaNextStep').style.display = 'block'
+    selectedDay = element.innerText
+    closeDaySelector()
+}
+
+const dayReset = () => {
+    document.querySelector('.labelDaysNewApointment').innerText = 'DIA'
+    selectedDay = 999
+    closeDaySelector()
+}
+
+
+///// ABAIXO, CRIAMOS DINAMICAMENTE O GRID PARA SELECIONAR O DIA DA TAREFA
+const gridsWhiteSpace = () => {
+    const firstDayCurrentMonth = getFirstDayOfMonth(
+        date.getFullYear(),
+        selectedMonth,
+    )
+    for (let j = 0; j < firstDayCurrentMonth.getDay(); j++) {
+        let gridsWhiteSpace = document.createElement('p')
+        gridsWhiteSpace.setAttribute('class', 'gridsWhiteSpace')
+        document.querySelector('.daySelectorContainer').append(gridsWhiteSpace)
+    }
+}
+
+
+const selectorsDay = () => {
+    for (let i = 1; i <= daysInTheMonth[selectedMonth]; i++) {
+        let selectorsDay = document.createElement('p')
+        selectorsDay.setAttribute('class', 'selectorsDay')
+        selectorsDay.innerText = i
+        selectorsDay.setAttribute("onclick", 'daySelected(this)')
+        document.querySelector('.daySelectorContainer').append(selectorsDay)
+    }
+}
+
+
+
+const calendarGridConstructor = () => {
+    gridsWhiteSpace()
+    selectorsDay()
 }
 
 /*

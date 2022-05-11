@@ -64,43 +64,63 @@
 
 
 
-    <div class="newApointmentDiv ">
+    <div class="newApointmentDiv newApointmentDivActive">
         <div>
             <button class="apointmentCloseButton" onclick="closeApointmentBox()">x</button>
             <h4>CRIE UMA NOVA TAREFA</h4>
-           <button class="setaPreviousStep" onclick="previousStepButton()"></button>
+            <button class="setaPreviousStep" onclick="previousStepButton()"></button>
             <button class='setaNextStep' onclick="nextStepButton()"></button>
             <main class="newApointmentMain">
                 <div class='sectionOne sectionActive'>
                     <div class="mesesNewApointmentDiv">
-                        <input type="checkbox" name="mesesNewApointment" id="mesesNewApointment" onclick="shownMonthSelector(this)">
-                        <label for="mesesNewApointment" class="labelMesesNewApointment"><p>MÊS</p></label>
+                        <input type="checkbox" name="mesesNewApointment" id="mesesNewApointment"
+                            onclick="shownMonthSelector(this)">
+                        <label for="mesesNewApointment" class="labelMesesNewApointment">
+                            <p>MÊS</p>
+                        </label>
                     </div>
                     <div class='mesesNewApointmentSelect'>
                         <button class='btnCloseMonthSelector' onclick="closeMonthSelector()">x</button>
                         <div class="monthSelectorContainer">
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">JANEIRO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">FEVEREIRO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">MARÇO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">ABRIL</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">MAIO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">JUNHO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">JULHO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">AGOSTO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">SETEMBRO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">OUTUBRO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">NOVEMBRO</p>
-                            <p class='monthSelectorElement' onclick="monthSelected(this)">DEZEMBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 0)">JANEIRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 1)">FEVEREIRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 2)">MARÇO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 3)">ABRIL</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 4)">MAIO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 5)">JUNHO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 6)">JULHO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 7)">AGOSTO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 8)">SETEMBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 9)">OUTUBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 10)">NOVEMBRO</p>
+                            <p class='monthSelectorElement' onclick="monthSelected(this, 11)">DEZEMBRO</p>
                         </div>
                     </div>
-                    <div class="diasNewApointmentDiv">
-                        <input type="checkbox" name="diasNewApointment" id="diasNewApointment">
-                        <label for="diasNewApointment" class="labelDiasNewApointment"><p>DIAS</p></label>
+                    <div class="daysNewApointmentDiv">
+                        <input type="checkbox" name="daysNewApointment" id="daysNewApointment"
+                            onclick="shownDaysSelector(this)">
+                        <label for="daysNewApointment" class="labelDaysNewApointment">
+                            <p>DIAS</p>
+                        </label>
+                    </div>
+                    <div class='daysNewApointmentSelect'>
+                        <button class='btnCloseDaySelector' onclick="closeDaySelector()">x</button>
+                        <div class='gridSelectorDayInTheWeek'>
+                            <p>Dom</p>
+                            <p>Seg</p>
+                            <p>Ter</p>
+                            <p>Qua</p>
+                            <p>Qui</p>
+                            <p>Sex</p>
+                            <p>Sáb</p>
+                        </div>
+                        <div class="daySelectorContainer">
+                        </div>
                     </div>
                 </div>
                 <div class="sectionTwo">TESTE2</div>
                 <div class="sectionThree">TESTE3</div>
-            
+
             </main>
         </div>
     </div>

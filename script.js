@@ -7,6 +7,11 @@ let currentMonth = date.getMonth() // MÊS CORRENTE
 let sectionActive = 0 // VARIÁVEL QUE MOSTRA QUAL PASSO DEVE SER MOSTRADO NA CRIAÇÃO DE TAREFAS
 let selectedMonth = 999 // VARIÁVEL QUE DEFINE EM QUAL MÊS ESTÁ SENDO INCLUÍDO O COMPROMISSO. É GLOBAL POIS É USADA EM VÁRIAS FUNÇÕES
 let selectedDay = 999 // VARIÁVEL QUE DEFINE EM QUAL DIA SERÁ INCLUÍDO O COMPROMISSO. NÃO SEI SE PRECISA ESTAR AQUI, MAS O MÊS ESTÁ, SO ...,
+let selectedMarkUp = 1
+let selectedTime = '15:00'
+let currentMarkUpText = 'lorem ipsun ou sla como escreve essa merda'
+let markUpColors = ['red', 'blue', 'pink', 'green']
+let appointments = []
 
 
 //ACHA O DIA DA SEMANA DO PRIMEIRO DIA DO MêS
@@ -31,11 +36,34 @@ const whiteSpace = () => {
 //A FUNÇÃO ABAIXO FAZ O NÚMERO DE DIAS EXISTENTES NO MÊS ATUAL/SELECIONADO
 const day = () => {
     for (let i = 1; i <= daysInTheMonth[currentMonth]; i++) {
-        let day = document.createElement('p')
+        let day = document.createElement('div')
         day.setAttribute('class', 'day')
-        day.innerText = i
+        let dayText = document.createElement('p')
+        dayText.innerText = i
+        day.append(dayText)
+        
+        appointments.forEach((appointments, index) =>{
+            if (appointments.month == currentMonth && appointments.day == i){
+                appointment(day, appointments.time, appointments.text, appointments.markUp)
+            }
+        })
+
         calendar.append(day)
     }
+}
+
+
+////A FUNÇÃO ABAIXO CRIA O COMPROMISSO, DE ACORDO COM AS INFORMAÇÕES DO OBJETO
+const appointment = (day, time, text, markUp) => {
+
+    let appointment = document.createElement('p')
+    appointment.setAttribute("class", 'appointment ')
+    appointment.classList.add(markUpColors[markUp])
+    let textContent = document.createElement('span')
+    textContent.innerText = time + ' - ' + text
+    appointment.append(textContent)
+    day.append(appointment)
+
 }
 
 
@@ -303,6 +331,31 @@ const calendarGridConstructor = () => {
     selectorsDay()
 }
 
+
+//////ABAIXO, DEFINIMOS A CLASSE PARA CRIAR OS OBJETOS NO QUAL SERÃO ARMAZENADOS NOSSOS COMPROMISSOS
+
+class appointmentObject {
+    constructor (month, day, time, markUp, text){
+        this.month = month
+        this.day = day
+        this.time = time
+        this.markUp = markUp
+        this.text = text
+    }
+}
+
+const createNewAppointment = () => {
+    let newAppointment = new appointmentObject(selectedMonth, selectedDay, selectedTime, selectedMarkUp, currentMarkUpText)
+    appointments.push(newAppointment)
+    
+    if (selectedMonth == currentMonth){
+        let days = []
+        days = document.querySelectorAll('.day')
+        let day = days[newAppointment.day - 1]
+        appointment(day, newAppointment.time, newAppointment.text, newAppointment.markUp)
+    }
+}
+
 /*
 ******SOBRE O LOCAL STORAGE************
 
@@ -314,3 +367,16 @@ const calendarGridConstructor = () => {
 6 - PEGAREMOS DO LOCAL STORAGE COM JSON.parse()
 7 - CONTINUAREMOS USANDO O MESMO ARRAY PARA COLOCAR OS COMPROMISSOS EM SEUS LUGARES
 */
+
+
+
+
+function eventFire(el, etype){
+    if (el.fireEvent) {
+      el.fireEvent('on' + etype);
+    } else {
+      var evObj = document.createEvent('Events');
+      evObj.initEvent(etype, true, false);
+      el.dispatchEvent(evObj);
+    }
+  }

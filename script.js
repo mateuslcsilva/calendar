@@ -7,11 +7,12 @@ let currentMonth = date.getMonth() // MÊS CORRENTE
 let sectionActive = 0 // VARIÁVEL QUE MOSTRA QUAL PASSO DEVE SER MOSTRADO NA CRIAÇÃO DE TAREFAS
 let selectedMonth = 999 // VARIÁVEL QUE DEFINE EM QUAL MÊS ESTÁ SENDO INCLUÍDO O COMPROMISSO. É GLOBAL POIS É USADA EM VÁRIAS FUNÇÕES
 let selectedDay = 999 // VARIÁVEL QUE DEFINE EM QUAL DIA SERÁ INCLUÍDO O COMPROMISSO. NÃO SEI SE PRECISA ESTAR AQUI, MAS O MÊS ESTÁ, SO ...,
-let selectedMarkUp = 1
-let selectedTime = '15:00'
-let currentMarkUpText = 'lorem ipsun ou sla como escreve essa merda'
+let selectedMarkUp = 999
+let selectedTime = ''
+let currentMarkUpText = ''
 let markUpColors = ['red', 'blue', 'pink', 'green']
 let appointments = []
+
 
 
 //ACHA O DIA DA SEMANA DO PRIMEIRO DIA DO MêS
@@ -19,6 +20,11 @@ function getFirstDayOfMonth(year, month) {
     return new Date(year, month, 1);
 }
 
+let localStorageData = localStorage.getItem('appointments')
+
+if (localStorageData) {
+    appointments = JSON.parse(localStorageData)
+}
 
 //A FUNÇÃO ABAIXO FAZ "ESPAÇOS EM BRANCO", PARA QUE O PRIMEIRO DIA DO MÊS FIQUE ADEQUADAMENTE POSICIONADO NO DIA DA SEMANA CORRETO.
 const whiteSpace = () => {
@@ -41,9 +47,9 @@ const day = () => {
         let dayText = document.createElement('p')
         dayText.innerText = i
         day.append(dayText)
-        
-        appointments.forEach((appointments, index) =>{
-            if (appointments.month == currentMonth && appointments.day == i){
+
+        appointments.forEach((appointments, index) => {
+            if (appointments.month == currentMonth && appointments.day == i) {
                 appointment(day, appointments.time, appointments.text, appointments.markUp)
             }
         })
@@ -83,7 +89,7 @@ calendarConstructor() // PARA CONSTRUIR O CALENDÁRIO DO MÊS CORRENTE MOSTRADO 
 
 // ABAIXO, A FUNÇÃO PARA MOSTRAR NOSSA CAIXA DE ALTERAR MARCADORES
 
-const changable = (index) =>  {
+const changable = (index) => {
     changingMarkUpsIndex = index
     document.querySelector('.floaterDiv').classList.add('active')
     switch (index) {
@@ -166,13 +172,17 @@ const newApointmentBox = () => {
 
 
 const closeApointmentBox = () => {
+    timeReset()
+    monthReset()
+    dayReset()
+    textReset()
+    circleReset()
+    selectedTime = ''
     document.querySelector('.fadeOutContainer').classList.remove('fadeOutContainerActive')
     document.querySelector('.newApointmentDiv').classList.remove('newApointmentDivActive')
     document.querySelector('.setaPreviousStep').style.display = 'none'
     document.querySelector('.setaNextStep').style.display = 'none'
     resetApointmentSection()
-    monthReset()
-    dayReset()
 }
 
 const resetApointmentSection = () => {
@@ -198,10 +208,12 @@ const nextStepButton = () => {
             document.querySelector('.sectionTwo').classList.add('sectionActive')
             document.querySelector('.sectionOne').classList.remove('sectionActive')
             document.querySelector('.setaPreviousStep').style.display = 'block'
+            createTimeElementSelector()
             sectionActive++
             break
         }
         case 1: {
+            if (selectedTime.length<1) return
             document.querySelector('.sectionThree').classList.add('sectionActive')
             document.querySelector('.sectionTwo').classList.remove('sectionActive')
             document.querySelector('.setaNextStep').style.display = 'none'
@@ -218,6 +230,7 @@ const previousStepButton = () => {
             document.querySelector('.sectionTwo').classList.remove('sectionActive')
             document.querySelector('.sectionOne').classList.add('sectionActive')
             document.querySelector('.setaPreviousStep').style.display = 'none'
+            timeReset()
             sectionActive--
             break
         }
@@ -265,7 +278,7 @@ const monthReset = () => {
 
 
 const shownDaysSelector = (element) => {
-    if (selectedMonth > 11){
+    if (selectedMonth > 11) {
         document.querySelector('#daysNewApointment').checked = false
         alert('Por favor, selecione um mês!')
         return
@@ -335,7 +348,7 @@ const calendarGridConstructor = () => {
 //////ABAIXO, DEFINIMOS A CLASSE PARA CRIAR OS OBJETOS NO QUAL SERÃO ARMAZENADOS NOSSOS COMPROMISSOS
 
 class appointmentObject {
-    constructor (month, day, time, markUp, text){
+    constructor(month, day, time, markUp, text) {
         this.month = month
         this.day = day
         this.time = time
@@ -345,38 +358,126 @@ class appointmentObject {
 }
 
 const createNewAppointment = () => {
+    if (selectedMarkUp > 3) {
+        alert('Ops, você esqueceu o marcador!')
+        return
+    }
+    if (currentMarkUpText.length < 1) {
+        alert("Ops, você esqueceu o texto!")
+        return
+    }
     let newAppointment = new appointmentObject(selectedMonth, selectedDay, selectedTime, selectedMarkUp, currentMarkUpText)
     appointments.push(newAppointment)
-    
-    if (selectedMonth == currentMonth){
+
+    if (selectedMonth == currentMonth) {
         let days = []
         days = document.querySelectorAll('.day')
         let day = days[newAppointment.day - 1]
         appointment(day, newAppointment.time, newAppointment.text, newAppointment.markUp)
     }
+    closeApointmentBox()
+    localStorage.setItem('appointments', JSON.stringify(appointments))
+
 }
 
-/*
-******SOBRE O LOCAL STORAGE************
+// ABAIXO DEFINIMOS A FUNÇÃO QUE CRIA OS HORÁRIOS QUANDO FAZEMOS UM NOVO COMPROMISSO
 
-1 - GUARDAREMOS OS DADOS DOS COMPRIMISSOS EM OBJETOS
-2 - OS OBJETOS TERÃO MÊS, DIA, HORA, MARCADOR E TEXTO
-3 - GUARDAREMOS TODOS ESSES OBJETOS EM UM ARRAY
-4 - USAREMOS ESSE ARRAY PARA TRABALHAR COM OS COMPROMISSOS DENTRO DO NOSSO SITE
-5 - GUARDAREMOS NO LOCAL STORAGE COM JSON.stringify()
-6 - PEGAREMOS DO LOCAL STORAGE COM JSON.parse()
-7 - CONTINUAREMOS USANDO O MESMO ARRAY PARA COLOCAR OS COMPROMISSOS EM SEUS LUGARES
+const createTimeElementSelector = () => {
+    for (var i = 8; i <= 19; i++) {
+        var textTime
+        i < 10 ? textTime = '0' + i + ':00' : textTime = '' + i + ':00'
+
+
+
+        let timeElement = document.createElement('button')
+        timeElement.setAttribute('class', 'timeSelectorElement')
+        timeElement.setAttribute("onclick", "timeSelected(this)")
+        timeElement.innerText = textTime
+        document.querySelector('.timeSelectorGrid').append(timeElement)
+    }
+
+    let timeElements = document.querySelectorAll(".timeSelectorElement")
+
+    appointments.forEach((appointments, index) => {
+        if (appointments.month == selectedMonth && appointments.day == selectedDay) {
+            timeElements.forEach((element) => {
+                element.innerText == appointments.time ? element.setAttribute('disabled', '') : {}
+            })
+        }
+    })
+}
+
+const timeSelected = (element) => {
+    selectedTime = element.innerText
+    let timeElements = []
+    timeElements = document.querySelectorAll('.timeSelectorElement')
+    timeElements.forEach((otherTimeElement) => {
+        otherTimeElement.classList.remove('timeSelectorElementActive')
+    })
+    element.classList.add('timeSelectorElementActive')
+}
+
+const timeReset = () => {
+    document.querySelector('.timeSelectorGrid').innerHTML = ''
+    selectedTime = ''
+}
+
+// // ABAIXO, É DEFINIDO O TERCEIRO PASSO DA CRIAÇÃO DE COMPROMISSO, COM TEXTO, MARCADOR E BOTÃO DE CONCLUSÃO
+
+const selectedCircle = (element, index) => {
+    selectedMarkUp = index
+
+    let circles = document.querySelectorAll('.circleSelectMarkUp')
+    circles.forEach((circle) => {
+        circle.classList.remove('markUpSelectedCircle')
+    })
+
+    element.classList.add('markUpSelectedCircle')
+}
+
+const circleReset = () => {
+    let circles = document.querySelectorAll('.circleSelectMarkUp')
+    circles.forEach((circle) => {
+        circle.classList.remove('markUpSelectedCircle')
+    })
+    selectedMarkUp = 999
+}
+
+const selectedText = (element) => {
+    currentMarkUpText = element.value
+}
+
+const textReset = () => {
+    document.querySelector('.inputSelectedText').value = ''
+    currentMarkUpText = ''
+}
+
+
+const eraseAll = () => {
+    let aviso = confirm('Tem certeza de que quer apagar todos o compromissos indeterminadamente??')
+    if (aviso == false) return
+    appointments = []
+    localStorage.removeItem('appointments')
+    clearCalendar()
+    calendarConstructor()
+}
+
+
+
+
+/*
+
 */
 
 
 
 
-function eventFire(el, etype){
+function eventFire(el, etype) {
     if (el.fireEvent) {
-      el.fireEvent('on' + etype);
+        el.fireEvent('on' + etype);
     } else {
-      var evObj = document.createEvent('Events');
-      evObj.initEvent(etype, true, false);
-      el.dispatchEvent(evObj);
+        var evObj = document.createEvent('Events');
+        evObj.initEvent(etype, true, false);
+        el.dispatchEvent(evObj);
     }
-  }
+}

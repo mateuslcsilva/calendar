@@ -25,12 +25,11 @@
         </div>
         <div class="dropDownMarkUps">
 
-            <input type="checkbox" id="checkboxHack">
-            <label for="checkboxHack" class='labelCheckboxHack'>
-                MARCADORES
-            </label>
-            <span id="seta"></span>
-
+                <input type="checkbox" id="checkboxHack">
+                <label for="checkboxHack" class='labelCheckboxHack'>
+                    MARCADORES
+                </label>
+                <span id="seta"></span>
             <div class="markUps">
                 <div class='noWrap'>
                     <p class='circle red'></p><span onclick="changable(0)" class='changable changableRed'>MARCADOR
@@ -50,6 +49,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="dropDownOptions">
+
+            <input type="checkbox" id="checkboxHackOptions">
+            <label for="checkboxHackOptions" class='labelCheckboxHackOptions'>
+                OPÇÕES
+            </label>
+            <span id="setaOptions"></span>
+
+            <div class="options">
+                <p onclick="eraseAll()"> LIMPAR AGENDA</p>
+            </div>
+        </div>
     </aside>
 
 
@@ -64,7 +76,7 @@
 
 
 
-    <div class="newApointmentDiv ">
+    <div class="newApointmentDiv">
         <div>
             <button class="apointmentCloseButton" onclick="closeApointmentBox()">x</button>
             <h4>CRIE UMA NOVA TAREFA</h4>
@@ -118,8 +130,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="sectionTwo">TESTE2</div>
-                <div class="sectionThree"><button onclick="createNewAppointment()">criar compromisso</button></div>
+                <div class="sectionTwo">
+                    <div class='divTittle'>
+                        <h2>Selecione um horário:</h2>
+                    </div>
+                    <div class='timeSelectorGrid'></div>
+                </div>
+                <div class="sectionThree">
+                    <div class='sectionThreeContainer'>
+                        <div class="divInputText">
+                            <input type="text" placeholder="Clique, e digite o texto do seu compromisso" class="inputSelectedText" onchange="selectedText(this)">
+                        </div>
+
+                        <div class="marksUpSelectBox">
+                            <div class='circleSelectMarkUp red' onclick="selectedCircle(this, 0)"></div>
+                            <div class='circleSelectMarkUp blue' onclick="selectedCircle(this, 1)"></div>
+                            <div class='circleSelectMarkUp pink' onclick="selectedCircle(this, 2)"></div>
+                            <div class='circleSelectMarkUp green' onclick="selectedCircle(this, 3)"></div>
+                        </div>
+                        <div class="divNewAppointmentButton">
+                            <button onclick="createNewAppointment()" class="newAppointmentButton">Pronto!</button>
+                        </div>
+                    </div>
+                </div>
 
             </main>
         </div>

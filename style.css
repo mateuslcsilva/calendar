@@ -152,7 +152,7 @@ body {
 }
 
 .noWrap:hover {
-    background-color: rgb(59, 59, 59);
+    background-color: rgb(38, 38, 39);
 }
 
 #checkboxHack:checked~.markUps {
@@ -248,7 +248,7 @@ body {
 }
 
 .options p:hover {
-    background-color: rgb(59, 59, 59);
+    background-color: rgb(38, 38, 39);
 }
 
 
@@ -439,14 +439,16 @@ body {
 .dayInTheWeek {
     transform: translateY(100%);
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(7, 15%);
-    padding-left: 2%;
+    display: flex;
+    flex-direction: row;
 }
 
 .dayInTheWeek p {
+    width: 15%;
     color: rgb(67, 120, 219);
     font-weight: 600;
+    display: flex;
+    justify-content: center;
 }
 
 /* LEGENDAS */

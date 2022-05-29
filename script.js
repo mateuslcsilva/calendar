@@ -1,8 +1,8 @@
 const calendar = document.querySelector('.calendar') // O LOCAL DA PÁGINA ONDE FICARÃO OS DIAS DO MÊS
-const daysInTheMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] // QUANTOS DIAS TEM CADA MÊS NO ANO
 const months = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
 let changingMarkUpsIndex = 0 // VARIÁVEL QUE MOSTRA QUAL MARCADOR SERÁ ALTERADO PELA CAIXA DE ALTERAÇÃO
 const date = new Date(); // DATE?
+let currentYear = date.getFullYear()
 let currentMonth = date.getMonth() // MÊS CORRENTE
 let sectionActive = 0 // VARIÁVEL QUE MOSTRA QUAL PASSO DEVE SER MOSTRADO NA CRIAÇÃO DE TAREFAS
 let selectedMonth = 999 // VARIÁVEL QUE DEFINE EM QUAL MÊS ESTÁ SENDO INCLUÍDO O COMPROMISSO. É GLOBAL POIS É USADA EM VÁRIAS FUNÇÕES
@@ -12,24 +12,39 @@ let selectedTime = ''
 let currentMarkUpText = ''
 let markUpColors = ['red', 'blue', 'pink', 'green']
 let appointments = []
+let markUpsPreference = []
 
 
 
 //ACHA O DIA DA SEMANA DO PRIMEIRO DIA DO MêS
-function getFirstDayOfMonth(year, month) {
+let getFirstDayOfMonth = (year, month) => {
     return new Date(year, month, 1);
 }
+
+//ACHA O ÚLTIMO DIA DO MêS
+let getLastDayOfMonth = (year,month) => {
+    return  new Date(year, month +1, 0).getDate();
+    }
+
+/*ABAIXO BUSCAMOS NO LOCALSTORAGE OS DADOS DE COMPROMISSOS */
 
 let localStorageData = localStorage.getItem('appointments')
 
 if (localStorageData) {
     appointments = JSON.parse(localStorageData)
+
+    appointments.forEach((element,index, array) => {
+        let monthDiference = date.getMonth() - element.month
+        if(monthDiference > 2){
+            array.splice(index, 1)
+        }
+    })
 }
 
 //A FUNÇÃO ABAIXO FAZ "ESPAÇOS EM BRANCO", PARA QUE O PRIMEIRO DIA DO MÊS FIQUE ADEQUADAMENTE POSICIONADO NO DIA DA SEMANA CORRETO.
 const whiteSpace = () => {
     const firstDayCurrentMonth = getFirstDayOfMonth(
-        date.getFullYear(),
+        currentYear,
         currentMonth,
     )
     for (let j = 0; j < firstDayCurrentMonth.getDay(); j++) {
@@ -41,7 +56,9 @@ const whiteSpace = () => {
 
 //A FUNÇÃO ABAIXO FAZ O NÚMERO DE DIAS EXISTENTES NO MÊS ATUAL/SELECIONADO
 const day = () => {
-    for (let i = 1; i <= daysInTheMonth[currentMonth]; i++) {
+    let daysInTheMonth = getLastDayOfMonth(currentYear, currentMonth)
+
+    for (let i = 1; i <= daysInTheMonth; i++) {
         let day = document.createElement('div')
         day.setAttribute('class', 'day')
         let dayText = document.createElement('p')
@@ -87,6 +104,8 @@ const calendarConstructor = () => {
 
 calendarConstructor() // PARA CONSTRUIR O CALENDÁRIO DO MÊS CORRENTE MOSTRADO AO ABRIR O SITE
 
+
+
 // ABAIXO, A FUNÇÃO PARA MOSTRAR NOSSA CAIXA DE ALTERAR MARCADORES
 
 const changable = (index) => {
@@ -115,6 +134,8 @@ const changing = () => {
     if (newMarkUpText) {
         document.querySelector('.markUps').children[changingMarkUpsIndex].children[1].innerText = newMarkUpText
         document.querySelector('.noWrapMarkUps').children[changingMarkUpsIndex].innerText = newMarkUpText
+        markUpsPreference.splice(changingMarkUpsIndex, 1, newMarkUpText)
+        localStorage.setItem('markUpsPreference', JSON.stringify(markUpsPreference))
         document.querySelector('.floaterDiv').classList.remove('active')
         document.querySelector('#ChangingMarkUps').style.border = 'none'
         document.querySelector('#ChangingMarkUps').value = ''
@@ -149,7 +170,10 @@ const nextMonth = () => {
         clearCalendar()
         calendarConstructor()
     } else {
-        alert('sorry, só temos esse ano, por enquanto')
+        currentMonth = 0
+        currentYear++
+        clearCalendar()
+        calendarConstructor()
     }
 }
 
@@ -159,7 +183,10 @@ const previousMonth = () => {
         clearCalendar()
         calendarConstructor()
     } else {
-        alert('sorry, só temos esse ano, por enquanto')
+        currentMonth = 11
+        currentYear--
+        clearCalendar()
+        calendarConstructor()
     }
 }
 
@@ -328,7 +355,9 @@ const gridsWhiteSpace = () => {
 
 
 const selectorsDay = () => {
-    for (let i = 1; i <= daysInTheMonth[selectedMonth]; i++) {
+    let daysInTheMonth = getLastDayOfMonth(currentYear, currentMonth)
+
+    for (let i = 1; i <= daysInTheMonth; i++) {
         let selectorsDay = document.createElement('p')
         selectorsDay.setAttribute('class', 'selectorsDay')
         selectorsDay.innerText = i
@@ -462,22 +491,52 @@ const eraseAll = () => {
     calendarConstructor()
 }
 
+const markUpStorage = () => {
+    let markUpsPreferenceStorage = localStorage.getItem('markUpsPreference')
+    if (markUpsPreferenceStorage){
+        markUpsPreference = JSON.parse(markUpsPreferenceStorage)
 
+        let markUpElements = document.querySelectorAll('.changable')
+        markUpElements.forEach((element, index) => {
+        element.innerText = markUpsPreference[index]
+        })
+
+        let markUpElementsSubtitleElements = document.querySelectorAll('.markUpSubtitle')
+        markUpElementsSubtitleElements.forEach((element, index) => {
+        element.innerText = markUpsPreference[index]
+        })
+
+
+    } else{
+        let markUpElements = document.querySelectorAll('.changable')
+        markUpElements.forEach((element) => {
+            markUpsPreference.push(element.innerText)
+        })
+        localStorage.setItem("markUpsPreference", JSON.stringify(markUpsPreference))
+    }
+    
+}
+
+const resetMarkUps = () => { //RESETA O TEXTO DOS MARCADORES
+    let aviso = confirm('Tem certeza de que quer apagar todos o compromissos indeterminadamente??')
+    if (aviso == false) return
+    markUpsPreference = ['MARCADOR VERMELHO', 'MARCADOR AZUL', 'MARCADOR ROSA', 'MARCADOR VERDE']
+    localStorage.removeItem('markUpsPreference')
+
+    let markUpElements = document.querySelectorAll('.changable')
+    markUpElements.forEach((element, index) => {
+    element.innerText = markUpsPreference[index]
+    })
+
+    let markUpElementsSubtitleElements = document.querySelectorAll('.markUpSubtitle')
+    markUpElementsSubtitleElements.forEach((element, index) => {
+    element.innerText = markUpsPreference[index]
+    })
+}
+
+markUpStorage() //FUNÇÃO PARA BUSCAR NO LOCALSTORAGE OS NOMES DOS MARCADORES
 
 
 /*
 
 */
-
-
-
-
-function eventFire(el, etype) {
-    if (el.fireEvent) {
-        el.fireEvent('on' + etype);
-    } else {
-        var evObj = document.createEvent('Events');
-        evObj.initEvent(etype, true, false);
-        el.dispatchEvent(evObj);
-    }
-}

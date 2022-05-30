@@ -16,15 +16,30 @@ let markUpsPreference = []
 
 
 
+function dynamicsort(property,order) {
+    var sort_order = 1
+    if(order === "desc"){
+        sort_order = -1
+    }
+    return function (a, b){
+        if(a[property] < b[property]){
+                return -1 * sort_order
+        }else if(a[property] > b[property]){
+                return 1 * sort_order
+        }else{
+                return 0 * sort_order
+        }
+    }
+}
 //ACHA O DIA DA SEMANA DO PRIMEIRO DIA DO MêS
 let getFirstDayOfMonth = (year, month) => {
     return new Date(year, month, 1);
 }
 
 //ACHA O ÚLTIMO DIA DO MêS
-let getLastDayOfMonth = (year,month) => {
-    return  new Date(year, month +1, 0).getDate();
-    }
+let getLastDayOfMonth = (year, month) => {
+    return new Date(year, month + 1, 0).getDate();
+}
 
 /*ABAIXO BUSCAMOS NO LOCALSTORAGE OS DADOS DE COMPROMISSOS */
 
@@ -33,9 +48,9 @@ let localStorageData = localStorage.getItem('appointments')
 if (localStorageData) {
     appointments = JSON.parse(localStorageData)
 
-    appointments.forEach((element,index, array) => {
+    appointments.forEach((element, index, array) => {
         let monthDiference = date.getMonth() - element.month
-        if(monthDiference > 2){
+        if (monthDiference > 2) {
             array.splice(index, 1)
         }
     })
@@ -65,10 +80,19 @@ const day = () => {
         dayText.innerText = i
         day.append(dayText)
 
+        let appointmentsOfTheDay = []
+
         appointments.forEach((appointments, index) => {
             if (appointments.month == currentMonth && appointments.day == i) {
-                appointment(day, appointments.time, appointments.text, appointments.markUp)
+                appointmentsOfTheDay.push(appointments)
+
             }
+        })
+
+        appointmentsOfTheDay.sort(dynamicsort('time', 'asc'))
+
+        appointmentsOfTheDay.forEach((element) => {
+            appointment(day, element.time, element.text, element.markUp)
         })
 
         calendar.append(day)
@@ -240,7 +264,7 @@ const nextStepButton = () => {
             break
         }
         case 1: {
-            if (selectedTime.length<1) return
+            if (selectedTime.length < 1) return
             document.querySelector('.sectionThree').classList.add('sectionActive')
             document.querySelector('.sectionTwo').classList.remove('sectionActive')
             document.querySelector('.setaNextStep').style.display = 'none'
@@ -398,12 +422,15 @@ const createNewAppointment = () => {
     let newAppointment = new appointmentObject(selectedMonth, selectedDay, selectedTime, selectedMarkUp, currentMarkUpText)
     appointments.push(newAppointment)
 
-    if (selectedMonth == currentMonth) {
-        let days = []
-        days = document.querySelectorAll('.day')
-        let day = days[newAppointment.day - 1]
-        appointment(day, newAppointment.time, newAppointment.text, newAppointment.markUp)
-    }
+    // if (selectedMonth == currentMonth) {
+    //     let days = []
+    //     days = document.querySelectorAll('.day')
+    //     let day = days[newAppointment.day - 1]
+    //     appointment(day, newAppointment.time, newAppointment.text, newAppointment.markUp)
+    // }
+
+    clearCalendar()
+    calendarConstructor()
     closeApointmentBox()
     localStorage.setItem('appointments', JSON.stringify(appointments))
 
@@ -458,16 +485,19 @@ const selectedCircle = (element, index) => {
 
     let circles = document.querySelectorAll('.circleSelectMarkUp')
     circles.forEach((circle) => {
-        circle.classList.remove('markUpSelectedCircle')
+        circle.innerHTML = ''
     })
 
-    element.classList.add('markUpSelectedCircle')
+    let checkedCircle = document.createElement('img')
+    checkedCircle.setAttribute('src', 'images/checkedicon.png')
+    checkedCircle.setAttribute('class', 'checkedIcon')
+    element.append(checkedCircle)
 }
 
 const circleReset = () => {
     let circles = document.querySelectorAll('.circleSelectMarkUp')
     circles.forEach((circle) => {
-        circle.classList.remove('markUpSelectedCircle')
+        circle.innerHTML = ''
     })
     selectedMarkUp = 999
 }
@@ -493,28 +523,28 @@ const eraseAll = () => {
 
 const markUpStorage = () => {
     let markUpsPreferenceStorage = localStorage.getItem('markUpsPreference')
-    if (markUpsPreferenceStorage){
+    if (markUpsPreferenceStorage) {
         markUpsPreference = JSON.parse(markUpsPreferenceStorage)
 
         let markUpElements = document.querySelectorAll('.changable')
         markUpElements.forEach((element, index) => {
-        element.innerText = markUpsPreference[index]
+            element.innerText = markUpsPreference[index]
         })
 
         let markUpElementsSubtitleElements = document.querySelectorAll('.markUpSubtitle')
         markUpElementsSubtitleElements.forEach((element, index) => {
-        element.innerText = markUpsPreference[index]
+            element.innerText = markUpsPreference[index]
         })
 
 
-    } else{
+    } else {
         let markUpElements = document.querySelectorAll('.changable')
         markUpElements.forEach((element) => {
             markUpsPreference.push(element.innerText)
         })
         localStorage.setItem("markUpsPreference", JSON.stringify(markUpsPreference))
     }
-    
+
 }
 
 const resetMarkUps = () => { //RESETA O TEXTO DOS MARCADORES
@@ -525,12 +555,12 @@ const resetMarkUps = () => { //RESETA O TEXTO DOS MARCADORES
 
     let markUpElements = document.querySelectorAll('.changable')
     markUpElements.forEach((element, index) => {
-    element.innerText = markUpsPreference[index]
+        element.innerText = markUpsPreference[index]
     })
 
     let markUpElementsSubtitleElements = document.querySelectorAll('.markUpSubtitle')
     markUpElementsSubtitleElements.forEach((element, index) => {
-    element.innerText = markUpsPreference[index]
+        element.innerText = markUpsPreference[index]
     })
 }
 

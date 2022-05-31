@@ -38,7 +38,7 @@ body {
 .logo {
     font-size: 1.5vw;
     font-weight: 600;
-    color: aliceblue;
+    color: lightgrey;
 }
 
 .btnNewAppointment {
@@ -46,7 +46,7 @@ body {
     aspect-ratio: 16/5;
     background-color: cornflowerblue;
     border-radius: 5px;
-    color: aliceblue;
+    color: white;
     font-size: 1.5vw;
     font-weight: 400;
     display: flex;
@@ -64,7 +64,7 @@ body {
 
 .dropDownMarkUps {
     width: 100%;
-    min-height: 6%;
+    min-height: 3%;
     max-height: auto;
     border-top: 1px solid black;
     position: relative;
@@ -94,14 +94,19 @@ body {
 }
 
 .labelCheckboxHack {
-    color: aliceblue;
-    font-size: 1.5vw;
+    color: lightgrey;
+    font-size: 1.2vw;
     font-weight: 400;
     cursor: pointer;
     position: absolute;
     left: 4%;
     top: 10px;
 }
+
+.labelCheckboxHack:hover{
+    color: white;
+}
+
 
 #checkboxHack:checked~#seta {
     transform: rotate(135deg);
@@ -146,13 +151,14 @@ body {
     justify-content: space-around;
     padding-top: 2.5%;
     padding-bottom: 2.5%;
-    color: aliceblue;
+    color: lightgrey;
     font-size: 2vh;
     font-weight: lighter;
 }
 
 .noWrap:hover {
-    background-color: rgb(38, 38, 39);
+    background-color: rgb(37, 37, 37);
+    color: white;
 }
 
 #checkboxHack:checked~.markUps {
@@ -205,13 +211,17 @@ body {
 }
 
 .labelCheckboxHackOptions {
-    color: aliceblue;
-    font-size: 1.5vw;
+    color: lightgrey;
+    font-size: 1.2vw;
     font-weight: 400;
     cursor: pointer;
     position: absolute;
     left: 4%;
     top: 10px;
+}
+
+.labelCheckboxHackOptions:hover{
+    color: white;
 }
 
 #checkboxHackOptions:checked~#setaOptions {
@@ -242,13 +252,14 @@ body {
     overflow: hidden;
     white-space: nowrap;
     padding: 2.5% 5%;
-    color: aliceblue;
+    color: lightgrey;
     font-size: 2vh;
     font-weight: lighter;
 }
 
 .options p:hover {
-    background-color: rgb(38, 38, 39);
+    background-color: rgb(37, 37, 37);
+    color: white;
 }
 
 
@@ -372,6 +383,7 @@ body {
     padding-left: 2%;
     box-sizing: border-box;
     overflow-y: scroll;
+    overflow-x: visible;
 }
 
 .day::-webkit-scrollbar {
@@ -384,20 +396,28 @@ body {
     transform: translate(-3.5%, -2%);
 }
 
+.appointmentBox{
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
 .appointment {
     min-width: 0%;
     max-width: 95%;
     font-size: 85%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
     white-space: nowrap;
     border-radius: 5px;
     transition: 2s ease-in-out;
     padding: 0.5% 2%;
     margin-bottom: 1%;
     color: white;
+    cursor: pointer;
 }
 
-.appointment:hover>* {
+.appointment:hover>p {
     display: inline-block;
     position: relative;
     animation: 3s linear 0s infinite alternate move;
@@ -1061,4 +1081,39 @@ body {
 .newAppointmentButton:hover {
     background-color: rgba(100, 148, 237, 0.781);
     transition: .3s ease-in-out
+}
+
+/* ABAIXO, FAZERMOS A BOX PARA ALTERAÇÕES NO COMPROMISSO JÁ INCLUSO */
+
+.changeAppointmentBox{
+    position: absolute;
+    background-color: transparent;
+    width: 70%;
+    height: 100%;
+    top: -80%;
+    left: 30%;
+    border-radius: 5px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    overflow: visible;
+}
+
+.changeAppointmentOption{
+    width: 30%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2%;
+    color: rgb(49, 204, 49);
+    cursor: pointer;
+    transition: .3 ease;
+}
+
+.changeAppointmentOption:hover{
+    background-color: rgba(211, 211, 211, 0.63);
+    transition: .3 ease;
 }

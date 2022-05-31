@@ -16,18 +16,18 @@ let markUpsPreference = []
 
 
 
-function dynamicsort(property,order) {
+function dynamicsort(property, order) {
     var sort_order = 1
-    if(order === "desc"){
+    if (order === "desc") {
         sort_order = -1
     }
-    return function (a, b){
-        if(a[property] < b[property]){
-                return -1 * sort_order
-        }else if(a[property] > b[property]){
-                return 1 * sort_order
-        }else{
-                return 0 * sort_order
+    return function (a, b) {
+        if (a[property] < b[property]) {
+            return -1 * sort_order
+        } else if (a[property] > b[property]) {
+            return 1 * sort_order
+        } else {
+            return 0 * sort_order
         }
     }
 }
@@ -103,13 +103,27 @@ const day = () => {
 ////A FUNÇÃO ABAIXO CRIA O COMPROMISSO, DE ACORDO COM AS INFORMAÇÕES DO OBJETO
 const appointment = (day, time, text, markUp) => {
 
-    let appointment = document.createElement('p')
+    let appointmentBox = document.createElement('div')
+    appointmentBox.setAttribute('class', 'appointmentBox')
+    let appointment = document.createElement('div')
     appointment.setAttribute("class", 'appointment ')
     appointment.classList.add(markUpColors[markUp])
-    let textContent = document.createElement('span')
+    let textContent = document.createElement('p')
     textContent.innerText = time + ' - ' + text
     appointment.append(textContent)
-    day.append(appointment)
+
+    appointments.forEach((element, index) => {
+        if (element.time == time && element.text == text && element.markUp == markUp) {
+            appointment.setAttribute('id', index)
+        }
+    })
+
+
+
+    appointmentBox.setAttribute("onclick", 'changingAppointment(this)')
+    appointmentBox.setAttribute('focusout', 'focusout()')
+    appointmentBox.append(appointment)
+    day.append(appointmentBox)
 
 }
 
@@ -565,6 +579,39 @@ const resetMarkUps = () => { //RESETA O TEXTO DOS MARCADORES
 }
 
 markUpStorage() //FUNÇÃO PARA BUSCAR NO LOCALSTORAGE OS NOMES DOS MARCADORES
+
+const changingAppointment = (element) => {
+    if (element.id == 'focused') {
+        let appointmentElements = document.querySelector('.changeAppointmentBox')
+        appointmentElements.remove()
+        element.id = ''
+        return
+    } 
+
+        let appointmentElements = document.querySelector('.changeAppointmentBox')
+        if (appointmentElements) {
+            element.id = ''
+            appointmentElements.remove()
+        }
+
+        let changeAppointmentBox = document.createElement('div')
+        changeAppointmentBox.setAttribute('class', 'changeAppointmentBox')
+
+        for (let i = 0; i < 4; i++) {
+            let changeAppointmentOption = document.createElement('p')
+            changeAppointmentOption.setAttribute('class', 'changeAppointmentOption')
+            changeAppointmentBox.append(changeAppointmentOption)
+        }
+        changeAppointmentBox.children[0].innerHTML = '✏️'
+        changeAppointmentBox.children[1].innerHTML = '📋'
+        changeAppointmentBox.children[2].innerHTML = '❌ '
+        changeAppointmentBox.children[3].innerHTML = '✔'
+
+
+        element.append(changeAppointmentBox)
+
+
+}
 
 
 /*

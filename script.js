@@ -573,48 +573,71 @@ const changingAppointment = (element) => {
         appointmentElements.remove()
         element.id = ''
         return
-    } 
+    }
 
-        let appointmentElements = document.querySelector('.changeAppointmentBox')
-        if (appointmentElements) {
-            element.id = ''
-            appointmentElements.remove()
-        }
+    let appointmentElements = document.querySelector('.changeAppointmentBox')
+    if (appointmentElements) {
+        element.id = ''
+        appointmentElements.remove()
+    }
 
-        let changeAppointmentBox = document.createElement('div')
-        changeAppointmentBox.setAttribute('class', 'changeAppointmentBox')
+    let changeAppointmentBox = document.createElement('div')
+    changeAppointmentBox.setAttribute('class', 'changeAppointmentBox')
 
-        for (let i = 0; i < 3; i++) {
-            let changeAppointmentOption = document.createElement('p')
-            changeAppointmentOption.setAttribute('class', 'changeAppointmentOption')
-            changeAppointmentBox.append(changeAppointmentOption)
-        }
-        changeAppointmentBox.children[0].innerHTML = '📋'
-        changeAppointmentBox.children[0].setAttribute('onclick', "copyToClipboard(this)")
-        changeAppointmentBox.children[1].innerHTML = '❌ '
-        changeAppointmentBox.children[1].setAttribute('onclick', 'eraseAppointment(this)')
-        changeAppointmentBox.children[2].innerHTML = '✔'
+    for (let i = 0; i < 3; i++) {
+        let changeAppointmentOption = document.createElement('p')
+        changeAppointmentOption.setAttribute('class', 'changeAppointmentOption')
+        changeAppointmentBox.append(changeAppointmentOption)
+    }
+    
+    changeAppointmentBox.children[0].innerHTML = '📋'
+    changeAppointmentBox.children[0].setAttribute('onclick', "copyToClipboard(this)")
+    changeAppointmentBox.children[1].innerHTML = '❌ '
+    changeAppointmentBox.children[1].setAttribute('onclick', 'eraseAppointment(this)')
+    changeAppointmentBox.children[2].innerHTML = '✔'
+    changeAppointmentBox.children[2].setAttribute('onclick', 'done(this)')
 
 
-        element.append(changeAppointmentBox)
+    element.append(changeAppointmentBox)
 }
 
 const eraseAppointment = (element) => {
     let confirmação = confirm('Deseja mesmo excluir essa tarefa?')
     if (confirmação == false) return
-        let elementParent = element.parentNode
-        appointments.splice(elementParent.parentNode.id, 1)
-        localStorage.setItem('appointments', JSON.stringify(appointments))
-        clearCalendar()
-        calendarConstructor()
-}   
+    let elementParent = element.parentNode
+    appointments.splice(elementParent.parentNode.id, 1)
+    localStorage.setItem('appointments', JSON.stringify(appointments))
+    clearCalendar()
+    calendarConstructor()
+}
 
 const copyToClipboard = (element) => {
     let elementParent = element.parentNode
     var copyText = elementParent.parentNode.firstChild.innerText
 
     navigator.clipboard.writeText(copyText)
-  }
+    element.innerHTML = '✔'
+}
+
+const done = (element) => {
+    let elementParent = element.parentNode
+    let doneElement = appointments[elementParent.parentNode.id].time
+    if(doneElement.substring(0,1) == '✔') return
+
+    let confirmação = confirm('Isso irá marcar a tarefa como concluída. Prosseguir?')
+    if (confirmação == false) {
+        let appointmentElements = document.querySelector('.changeAppointmentBox')
+        if (appointmentElements) {
+            appointmentElements.remove()
+        }
+        return
+    }
+
+    appointments[elementParent.parentNode.id].time = '✔✔ ' + doneElement
+    localStorage.setItem('appointments', JSON.stringify(appointments))
+    clearCalendar()
+    calendarConstructor()
+}
 
 
 /*

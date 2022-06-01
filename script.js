@@ -41,20 +41,6 @@ let getLastDayOfMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
 }
 
-/*ABAIXO BUSCAMOS NO LOCALSTORAGE OS DADOS DE COMPROMISSOS */
-
-let localStorageData = localStorage.getItem('appointments')
-
-if (localStorageData) {
-    appointments = JSON.parse(localStorageData)
-
-    appointments.forEach((element, index, array) => {
-        let monthDiference = date.getMonth() - element.month
-        if (monthDiference > 2) {
-            array.splice(index, 1)
-        }
-    })
-}
 
 //A FUNÇÃO ABAIXO FAZ "ESPAÇOS EM BRANCO", PARA QUE O PRIMEIRO DIA DO MÊS FIQUE ADEQUADAMENTE POSICIONADO NO DIA DA SEMANA CORRETO.
 const whiteSpace = () => {
@@ -114,7 +100,7 @@ const appointment = (day, time, text, markUp) => {
 
     appointments.forEach((element, index) => {
         if (element.time == time && element.text == text && element.markUp == markUp) {
-            appointment.setAttribute('id', index)
+            appointmentBox.setAttribute('id', index)
         }
     })
 
@@ -140,7 +126,6 @@ const calendarConstructor = () => {
 }
 
 
-calendarConstructor() // PARA CONSTRUIR O CALENDÁRIO DO MÊS CORRENTE MOSTRADO AO ABRIR O SITE
 
 
 
@@ -578,7 +563,9 @@ const resetMarkUps = () => { //RESETA O TEXTO DOS MARCADORES
     })
 }
 
-markUpStorage() //FUNÇÃO PARA BUSCAR NO LOCALSTORAGE OS NOMES DOS MARCADORES
+
+
+// ABAIXO, DEFINIMOS AS FUNÇÕES PARA ALTERAÇÃO DO COMPROMISSO
 
 const changingAppointment = (element) => {
     if (element.id == 'focused') {
@@ -597,23 +584,59 @@ const changingAppointment = (element) => {
         let changeAppointmentBox = document.createElement('div')
         changeAppointmentBox.setAttribute('class', 'changeAppointmentBox')
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 3; i++) {
             let changeAppointmentOption = document.createElement('p')
             changeAppointmentOption.setAttribute('class', 'changeAppointmentOption')
             changeAppointmentBox.append(changeAppointmentOption)
         }
-        changeAppointmentBox.children[0].innerHTML = '✏️'
-        changeAppointmentBox.children[1].innerHTML = '📋'
-        changeAppointmentBox.children[2].innerHTML = '❌ '
-        changeAppointmentBox.children[3].innerHTML = '✔'
+        changeAppointmentBox.children[0].innerHTML = '📋'
+        changeAppointmentBox.children[0].setAttribute('onclick', "copyToClipboard(this)")
+        changeAppointmentBox.children[1].innerHTML = '❌ '
+        changeAppointmentBox.children[1].setAttribute('onclick', 'eraseAppointment(this)')
+        changeAppointmentBox.children[2].innerHTML = '✔'
 
 
         element.append(changeAppointmentBox)
-
-
 }
+
+const eraseAppointment = (element) => {
+    let confirmação = confirm('Deseja mesmo excluir essa tarefa?')
+    if (confirmação == false) return
+        let elementParent = element.parentNode
+        appointments.splice(elementParent.parentNode.id, 1)
+        localStorage.setItem('appointments', JSON.stringify(appointments))
+        clearCalendar()
+        calendarConstructor()
+}   
+
+const copyToClipboard = (element) => {
+    let elementParent = element.parentNode
+    var copyText = elementParent.parentNode.firstChild.innerText
+
+    navigator.clipboard.writeText(copyText)
+  }
 
 
 /*
 
 */
+
+
+
+/*ABAIXO BUSCAMOS NO LOCALSTORAGE OS DADOS DE COMPROMISSOS */
+
+let localStorageData = localStorage.getItem('appointments')
+
+if (localStorageData) {
+    appointments = JSON.parse(localStorageData)
+
+    appointments.forEach((element, index, array) => {
+        let monthDiference = date.getMonth() - element.month
+        if (monthDiference > 2) {
+            array.splice(index, 1)
+        }
+    })
+}
+
+markUpStorage() //FUNÇÃO PARA BUSCAR NO LOCALSTORAGE OS NOMES DOS MARCADORES
+calendarConstructor() // PARA CONSTRUIR O CALENDÁRIO DO MÊS CORRENTE MOSTRADO AO ABRIR O SITE

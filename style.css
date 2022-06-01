@@ -1088,10 +1088,10 @@ body {
 .changeAppointmentBox{
     position: absolute;
     background-color: transparent;
-    width: 70%;
+    width: 50%;
     height: 100%;
     top: -80%;
-    left: 30%;
+    left: 50%;
     border-radius: 5px 0;
     display: flex;
     flex-direction: row;
@@ -1102,7 +1102,7 @@ body {
 .changeAppointmentOption{
     width: 30%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: 5PX 0;
     background-color: transparent;
     display: flex;
     justify-content: center;

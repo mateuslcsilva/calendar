@@ -99,7 +99,7 @@ const appointment = (day, time, text, markUp) => {
     appointment.append(textContent)
 
     appointments.forEach((element, index) => {
-        if (element.time == time && element.text == text && element.markUp == markUp) {
+        if (element.time == time && element.text == text && element.markUp == markUp && element.day == day.firstChild.innerText && element.month == currentMonth) {
             appointmentBox.setAttribute('id', index)
         }
     })
@@ -616,20 +616,25 @@ const copyToClipboard = (element) => {
     var copyText = elementParent.parentNode.firstChild.innerText
 
     navigator.clipboard.writeText(copyText)
+    element.innerHTML = ''
     element.innerHTML = '✔'
+    clearCalendar()
+    calendarConstructor()
 }
 
 const done = (element) => {
     let elementParent = element.parentNode
     let doneElement = appointments[elementParent.parentNode.id].time
-    if(doneElement.substring(0,1) == '✔') return
+    if(doneElement.substring(0,1) == '✔'){
+        clearCalendar()
+        calendarConstructor()
+        return
+    }
 
     let confirmação = confirm('Isso irá marcar a tarefa como concluída. Prosseguir?')
     if (confirmação == false) {
-        let appointmentElements = document.querySelector('.changeAppointmentBox')
-        if (appointmentElements) {
-            appointmentElements.remove()
-        }
+        clearCalendar()
+        calendarConstructor()
         return
     }
 

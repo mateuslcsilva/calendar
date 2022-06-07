@@ -568,16 +568,9 @@ const resetMarkUps = () => { //RESETA O TEXTO DOS MARCADORES
 // ABAIXO, DEFINIMOS AS FUNÇÕES PARA ALTERAÇÃO DO COMPROMISSO
 
 const changingAppointment = (element) => {
-    if (element.id == 'focused') {
-        let appointmentElements = document.querySelector('.changeAppointmentBox')
-        appointmentElements.remove()
-        element.id = ''
-        return
-    }
 
     let appointmentElements = document.querySelector('.changeAppointmentBox')
     if (appointmentElements) {
-        element.id = ''
         appointmentElements.remove()
     }
 

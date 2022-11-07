@@ -1,3 +1,4 @@
+const patch = 1.1
 const calendar = document.querySelector('.calendar') // O LOCAL DA PÁGINA ONDE FICARÃO OS DIAS DO MÊS
 const months = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
 let changingMarkUpsIndex = 0 // VARIÁVEL QUE MOSTRA QUAL MARCADOR SERÁ ALTERADO PELA CAIXA DE ALTERAÇÃO
@@ -5,6 +6,7 @@ const date = new Date(); // DATE?
 let currentYear = date.getFullYear()
 let currentMonth = date.getMonth() // MÊS CORRENTE
 let sectionActive = 0 // VARIÁVEL QUE MOSTRA QUAL PASSO DEVE SER MOSTRADO NA CRIAÇÃO DE TAREFAS
+let selectedYear = currentYear
 let selectedMonth = 999 // VARIÁVEL QUE DEFINE EM QUAL MÊS ESTÁ SENDO INCLUÍDO O COMPROMISSO. É GLOBAL POIS É USADA EM VÁRIAS FUNÇÕES
 let selectedDay = 999 // VARIÁVEL QUE DEFINE EM QUAL DIA SERÁ INCLUÍDO O COMPROMISSO. NÃO SEI SE PRECISA ESTAR AQUI, MAS O MÊS ESTÁ, SO ...,
 let selectedMarkUp = 999
@@ -69,7 +71,7 @@ const day = () => {
         let appointmentsOfTheDay = []
 
         appointments.forEach((appointments, index) => {
-            if (appointments.month == currentMonth && appointments.day == i) {
+            if (appointments.year == currentYear && appointments.month == currentMonth && appointments.day == i) {
                 appointmentsOfTheDay.push(appointments)
 
             }
@@ -218,11 +220,21 @@ const previousMonth = () => {
 const newApointmentBox = () => {
     document.querySelector('.fadeOutContainer').classList.add('fadeOutContainerActive')
     document.querySelector('.newApointmentDiv').classList.add('newApointmentDivActive')
+    
+    const select = document.querySelector('#anoNewAppointment')
+
+    for (let i = currentYear; i <= currentYear + 2; i++){
+        let opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = i;
+        select.append(opt);
+    }
 }
 
 
 const closeApointmentBox = () => {
     timeReset()
+    yearReset()
     monthReset()
     dayReset()
     textReset()
@@ -296,6 +308,15 @@ const previousStepButton = () => {
 
 
 //ABAIXO, AS FUNÇÕES PARA O PRIMEIRO PASSO DE CRIAÇÃO DE TAREFA
+
+const yearSelected = (element) => {
+    selectedYear = element.value
+}
+
+const yearReset = () => {
+    selectedYear = currentYear
+    document.querySelector('#anoNewAppointment').innerHTML = ''
+}
 
 const shownMonthSelector = (element) => {
     if (element.checked) {
@@ -378,7 +399,7 @@ const gridsWhiteSpace = () => {
 
 
 const selectorsDay = () => {
-    let daysInTheMonth = getLastDayOfMonth(currentYear, currentMonth)
+    let daysInTheMonth = getLastDayOfMonth(currentYear, selectedMonth)
 
     for (let i = 1; i <= daysInTheMonth; i++) {
         let selectorsDay = document.createElement('p')
@@ -400,7 +421,8 @@ const calendarGridConstructor = () => {
 //////ABAIXO, DEFINIMOS A CLASSE PARA CRIAR OS OBJETOS NO QUAL SERÃO ARMAZENADOS NOSSOS COMPROMISSOS
 
 class appointmentObject {
-    constructor(month, day, time, markUp, text) {
+    constructor(year, month, day, time, markUp, text) { 
+        this.year = year
         this.month = month
         this.day = day
         this.time = time
@@ -418,15 +440,8 @@ const createNewAppointment = () => {
         alert("Ops, você esqueceu o texto!")
         return
     }
-    let newAppointment = new appointmentObject(selectedMonth, selectedDay, selectedTime, selectedMarkUp, currentMarkUpText)
+    let newAppointment = new appointmentObject(selectedYear, selectedMonth, selectedDay, selectedTime, selectedMarkUp, currentMarkUpText)
     appointments.push(newAppointment)
-
-    // if (selectedMonth == currentMonth) {
-    //     let days = []
-    //     days = document.querySelectorAll('.day')
-    //     let day = days[newAppointment.day - 1]
-    //     appointment(day, newAppointment.time, newAppointment.text, newAppointment.markUp)
-    // }
 
     clearCalendar()
     calendarConstructor()
@@ -454,7 +469,7 @@ const createTimeElementSelector = () => {
     let timeElements = document.querySelectorAll(".timeSelectorElement")
 
     appointments.forEach((appointments, index) => {
-        if (appointments.month == selectedMonth && appointments.day == selectedDay) {
+        if (appointments.year == selectedYear && appointments.month == selectedMonth && appointments.day == selectedDay) {
             timeElements.forEach((element) => {
                 element.innerText == appointments.time ? element.setAttribute('disabled', '') : {}
             })
@@ -638,11 +653,6 @@ const done = (element) => {
 }
 
 
-/*
-
-*/
-
-
 
 /*ABAIXO BUSCAMOS NO LOCALSTORAGE OS DADOS DE COMPROMISSOS */
 
@@ -657,6 +667,20 @@ if (localStorageData) {
             array.splice(index, 1)
         }
     })
+}
+
+/* ABAIXO, CONFERIMOS SE A VERSÃO QUE ERA USADA ERA A É A ATUALZIDA, E CASO NÃO, CORRIGIMOS O QUE PRECISA SER CORRIGIDO
+NO CASO, A VERSÃO ANTERIOR AINDA NÃO SUPORTAVA SELECIONAR O ANO DO COMPROMISSO, E, AO SER IMPLEMENTADO ESSA FUNCIONALIDADE, PRECISAMOS SETAR O ANO PARA TODOS OS COMPROMISSOS */
+
+let costumerPatch = localStorage.getItem('patch')
+
+if(!costumerPatch){
+    appointments.forEach(element => {
+        if(element.year) return
+        element.year = currentYear
+    })
+
+    localStorage.setItem('patch', patch)
 }
 
 markUpStorage() //FUNÇÃO PARA BUSCAR NO LOCALSTORAGE OS NOMES DOS MARCADORES

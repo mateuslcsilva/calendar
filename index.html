@@ -86,6 +86,13 @@
             <button class='setaNextStep' onclick="nextStepButton()"></button>
             <main class="newApointmentMain">
                 <div class='sectionOne sectionActive'>
+                    <div style="position: absolute;">
+                    <div class="anoNewAppointmentDiv">
+                        <select name="" id="anoNewAppointment" class="anoNewAppointment" onchange="yearSelected(this)">
+
+                        </select>
+                    </div>
+                </div>
                     <div class="mesesNewApointmentDiv">
                         <input type="checkbox" name="mesesNewApointment" id="mesesNewApointment"
                             onclick="shownMonthSelector(this)">

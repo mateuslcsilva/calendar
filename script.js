@@ -1,4 +1,4 @@
-const patch = 1.1
+const patch = 1.101
 const calendar = document.querySelector('.calendar') // O LOCAL DA PÁGINA ONDE FICARÃO OS DIAS DO MÊS
 const months = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
 let changingMarkUpsIndex = 0 // VARIÁVEL QUE MOSTRA QUAL MARCADOR SERÁ ALTERADO PELA CAIXA DE ALTERAÇÃO
@@ -674,8 +674,8 @@ NO CASO, A VERSÃO ANTERIOR AINDA NÃO SUPORTAVA SELECIONAR O ANO DO COMPROMISSO
 
 let costumerPatch = localStorage.getItem('patch')
 
-if(!costumerPatch){
-    appointments.forEach(element => {
+if(!costumerPatch || costumerPatch != patch){
+    appointments.map(element => {
         if(element.year) return
         element.year = currentYear
     })

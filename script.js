@@ -1,4 +1,4 @@
-const patch = 1.101
+const patch = 1.102
 const calendar = document.querySelector('.calendar') // O LOCAL DA PÁGINA ONDE FICARÃO OS DIAS DO MÊS
 const months = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
 let changingMarkUpsIndex = 0 // VARIÁVEL QUE MOSTRA QUAL MARCADOR SERÁ ALTERADO PELA CAIXA DE ALTERAÇÃO
@@ -310,7 +310,7 @@ const previousStepButton = () => {
 //ABAIXO, AS FUNÇÕES PARA O PRIMEIRO PASSO DE CRIAÇÃO DE TAREFA
 
 const yearSelected = (element) => {
-    selectedYear = element.value
+    selectedYear = Number(element.value)
 }
 
 const yearReset = () => {
@@ -387,7 +387,7 @@ const dayReset = () => {
 ///// ABAIXO, CRIAMOS DINAMICAMENTE O GRID PARA SELECIONAR O DIA DA TAREFA
 const gridsWhiteSpace = () => {
     const firstDayCurrentMonth = getFirstDayOfMonth(
-        date.getFullYear(),
+        selectedYear,
         selectedMonth,
     )
     for (let j = 0; j < firstDayCurrentMonth.getDay(); j++) {
@@ -399,7 +399,7 @@ const gridsWhiteSpace = () => {
 
 
 const selectorsDay = () => {
-    let daysInTheMonth = getLastDayOfMonth(currentYear, selectedMonth)
+    let daysInTheMonth = getLastDayOfMonth(selectedYear, selectedMonth)
 
     for (let i = 1; i <= daysInTheMonth; i++) {
         let selectorsDay = document.createElement('p')
@@ -681,6 +681,7 @@ if(!costumerPatch || costumerPatch != patch){
     })
 
     localStorage.setItem('patch', patch)
+    localStorage.setItem('appointments', JSON.stringify(appointments))
 }
 
 markUpStorage() //FUNÇÃO PARA BUSCAR NO LOCALSTORAGE OS NOMES DOS MARCADORES

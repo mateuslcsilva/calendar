@@ -220,7 +220,8 @@ const previousMonth = () => {
 const newApointmentBox = () => {
     document.querySelector('.fadeOutContainer').classList.add('fadeOutContainerActive')
     document.querySelector('.newApointmentDiv').classList.add('newApointmentDivActive')
-    
+
+    selectedYear = currentYear
     const select = document.querySelector('#anoNewAppointment')
 
     for (let i = currentYear; i <= currentYear + 2; i++){
@@ -663,7 +664,8 @@ if (localStorageData) {
 
     appointments.forEach((element, index, array) => {
         let monthDiference = date.getMonth() - element.month
-        if (monthDiference > 2) {
+        if (monthDiference > 2
+            && element.year <= currentYear) {
             array.splice(index, 1)
         }
     })

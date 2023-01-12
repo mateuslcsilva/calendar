@@ -642,7 +642,7 @@ const showingBackupUploadBox = () => {
 };
 
 const getBackupData = (event) => {
-    fetch(event.target.files[0])
+    fetch(event.target.files[0].name)
     .then(response => response.text())
     .then(text => {
       console.log(text);

@@ -107,6 +107,7 @@ body {
     position: absolute;
     left: 4%;
     top: 10px;
+    width: 100%;
     transition: .3s ease-in-out;
 }
 
@@ -234,6 +235,7 @@ body {
     position: absolute;
     left: 4%;
     top: 10px;
+    width: 100%;
     transition: .3s ease-in-out;
 }
 
@@ -553,6 +555,26 @@ body {
     border: none;
     background-color: transparent;
     cursor: pointer;
+}
+
+.input-backup-file{
+    min-width: fit-content;
+    padding: 3px 6px;
+    border: none;
+    border-radius: 5px;
+    background-color: cornflowerblue;
+    font: bold 150% inherit;
+    color: white;
+    cursor: pointer;
+    transition: .3s ease-in-out
+}
+
+.input-backup-file:active{
+    background-color: rgba(100, 148, 237, 0.534);
+}
+
+.input-backup-file input{
+    display: none;
 }
 
 #ChangingMarkUps {
